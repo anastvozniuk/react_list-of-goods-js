@@ -16,61 +16,82 @@ export const goodsFromServer = [
 ];
 
 export const App = () => {
-const [goodsData, setGoodsData] = useState(goodsFromServer)
-const [activeButton, setActiveButton] = useState('') //'', 'length', 'alphabetically', 'Reverse'
-const initialGoods = goodsFromServer;
+  const [goodsData, setGoodsData] = useState(goodsFromServer);
+  const [activeButton, setActiveButton] = useState(''); // '', 'length', 'alphabetically', 'Reverse'
 
- 
+  function alphabeticSort() {
+    const sortedGoodsData = [...goodsData].sort();
 
-function alphabeticSort() {
-  const sortedGoodsData = [...goodsData].sort()
-  setGoodsData(sortedGoodsData)
-  setActiveButton('alphabetically')
-}
+    setGoodsData(sortedGoodsData);
+    setActiveButton('alphabetically');
+  }
 
-function lengthSort() {
-  const sortedLengthGoodsData = [...goodsData].sort((goods1, goods2) => goods1.length - goods2.length)
-  setGoodsData(sortedLengthGoodsData)
-  setActiveButton('length')
-}
+  function lengthSort() {
+    const sortedLengthGoodsData = [...goodsData].sort(
+      (goods1, goods2) => goods1.length - goods2.length,
+    );
 
-function resetButton() {
-  setGoodsData(initialGoods)
-  setActiveButton('reset')
-}
+    setGoodsData(sortedLengthGoodsData);
+    setActiveButton('length');
+  }
 
-function reverseGoods() {
-  const reversedGoodsData = [...goodsData].reverse();
-  setGoodsData(reversedGoodsData);
-  setActiveButton('reverse');
-}
+  function resetButton() {
+    setGoodsData([...goodsFromServer]);
+    setActiveButton('reset');
+  }
 
-return (
-  <div className="section content">
-    <div className="buttons">
-      <button type="button" onClick={() => alphabeticSort()} className={"button is-info " + (activeButton === 'alphabetically' ? '' : 'is-light')}>
-        Sort alphabetically
-      </button>
+  function reverseGoods() {
+    const reversedGoodsData = [...goodsData].reverse();
 
-      <button type="button" onClick={() => lengthSort()} className={"button is-info " + (activeButton === 'length' ? '' : 'is-light')}>
-        Sort by length
-      </button>
+    setGoodsData(reversedGoodsData);
+    setActiveButton('reverse');
+  }
 
-      <button type="button"   onClick={reverseGoods} className={"button is-info " + (activeButton === 'reverse' ? '' : 'is-light')}>
-        Reverse
-      </button>
+  return (
+    <div className="section content">
+      <div className="buttons">
+        <button
+          type="button"
+          onClick={() => alphabeticSort()}
+          className={`button is-info ${
+            activeButton === 'alphabetically' ? '' : 'is-light'
+          }`}
+        >
+          Sort alphabetically
+        </button>
 
-      <button type="button"   onClick={resetButton}  className={"button is-info " + (activeButton === 'reset' ? '' : 'is-light')}>
-        Reset
-      </button>
+        <button
+          type="button"
+          onClick={() => lengthSort()}
+          className={`button is-info ${activeButton === 'length' ? '' : 'is-light'}`}
+        >
+          Sort by length
+        </button>
+
+        <button
+          type="button"
+          onClick={reverseGoods}
+          className={`button is-info ${activeButton === 'reverse' ? '' : 'is-light'}`}
+        >
+          Reverse
+        </button>
+
+        <button
+          type="button"
+          onClick={resetButton}
+          className={`button is-info ${activeButton === 'reset' ? '' : 'is-light'}`}
+        >
+          Reset
+        </button>
+      </div>
+
+      <ul>
+        {goodsData.map(str => (
+          <li key={str} data-cy="Good">
+            {str}
+          </li>
+        ))}
+      </ul>
     </div>
-
-    <ul>
-   {goodsData.map((str) => (<li key={str} data-cy="Good">{str}</li>)
-  )}
-    </ul>
-  </div>
-
-  
-)
+  );
 };
